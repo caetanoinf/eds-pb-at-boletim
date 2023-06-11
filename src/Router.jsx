@@ -1,23 +1,23 @@
-import { useCallback, useState } from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { SignIn } from "./pages/SignIn";
 import { Home } from "./pages/Home";
 import { Classes } from "./pages/Classes";
+import { useSession } from "./contexts";
 
-export function Router() {
-  const [page, setPage] = useState("signin");
+export function AppRouter() {
+  const { isLoggedIn } = useSession();
 
-  const navigate = useCallback((page) => {
-    setPage(page);
-  }, []);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={isLoggedIn ? <Home /> : <SignIn />} />
+        <Route path="/classes" element={<Classes />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
-  switch (page) {
-    case "signin":
-      return <SignIn navigate={navigate} />;
-    case "home":
-      return <Home navigate={navigate} />;
-    case "classes":
-      return <Classes navigate={navigate} />;
-    default:
-      return "Not found";
-  }
+function NotFound() {
+  return <h1>Página não encontrada</h1>;
 }

@@ -1,29 +1,35 @@
-import { Button, Stack, Typography } from "@mui/material";
-import { useEffect } from "react";
-import { getUser } from "../data";
-import { useState } from "react";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { UserDetail } from "../components/UserDetail";
+import { useSession } from "../contexts";
+import { useNavigate } from "react-router-dom";
+import { Greeting } from "../components/Greeting";
 
-const USER_ID = "123456789";
+export function Home() {
+  const { profile, setUserId } = useSession();
+  const navigate = useNavigate();
 
-export function Home({ navigate }) {
-  const [authenticatedUser, setAuthenticatedUser] = useState(null);
-
-  useEffect(() => {
-    getUser(USER_ID).then(setAuthenticatedUser);
-  }, []);
+  const handleLogout = () => {
+    setUserId(null);
+  };
 
   return (
     <Stack direction="column" alignItems="center" flex="1" spacing={3} height="100%" py={6}>
       <Stack width="100%" direction="row" alignItems="center" justifyContent="space-between">
-        <Typography>👋 Bem-vindo {authenticatedUser?.email}!</Typography>
-        <Button variant="text" size="small" onClick={() => navigate("classes")}>
-          Notas e Faltas
-        </Button>
+        <Greeting email={profile?.email} />
+
+        <Box>
+          <Button variant="text" size="small" onClick={() => navigate("classes")}>
+            Notas e Faltas
+          </Button>
+
+          <Button variant="outlined" sx={{ marginLeft: 1 }} size="small" onClick={handleLogout}>
+            Sair
+          </Button>
+        </Box>
       </Stack>
       <Typography variant="h2">Dados pessoais</Typography>
 
-      <UserDetail user={authenticatedUser} />
+      <UserDetail user={profile} />
     </Stack>
   );
 }

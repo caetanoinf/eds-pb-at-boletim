@@ -1,9 +1,14 @@
 import { Container, Stack, Typography } from "@mui/material";
 import { LoginForm } from "../components";
+import { useSession } from "../contexts";
 
-export function SignIn({ navigate }) {
+const USER_ID = "123456789";
+
+export function SignIn() {
+  const { setUserId } = useSession();
+
   const handleSubmit = ({ email, password }) => {
-    navigate("home");
+    setUserId(USER_ID);
   };
 
   return (
