@@ -1,35 +1,19 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { UserDetail } from "../components/UserDetail";
 import { useSession } from "../contexts";
-import { useNavigate } from "react-router-dom";
-import { Greeting } from "../components/Greeting";
+import { UserSidebar } from "../components/UserSidebar";
 
 export function Home() {
-  const { profile, setUserId } = useSession();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    setUserId(null);
-  };
+  const { profile } = useSession();
 
   return (
-    <Stack direction="column" alignItems="center" flex="1" spacing={3} height="100%" py={6}>
-      <Stack width="100%" direction="row" alignItems="center" justifyContent="space-between">
-        <Greeting email={profile?.email} />
+    <>
+      <UserSidebar />
+      <Stack direction="column" flex="1" spacing={3} height="100%" py={6}>
+        <Typography variant="h3">Dados pessoais</Typography>
 
-        <Box>
-          <Button variant="text" size="small" onClick={() => navigate("classes")}>
-            Notas e Faltas
-          </Button>
-
-          <Button variant="outlined" sx={{ marginLeft: 1 }} size="small" onClick={handleLogout}>
-            Sair
-          </Button>
-        </Box>
+        <UserDetail user={profile} />
       </Stack>
-      <Typography variant="h2">Dados pessoais</Typography>
-
-      <UserDetail user={profile} />
-    </Stack>
+    </>
   );
 }

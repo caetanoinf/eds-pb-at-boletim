@@ -1,25 +1,19 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { ClassesTable } from "../components/ClassesTable";
 import { useSession } from "../contexts";
-import { useNavigate } from "react-router-dom";
-import { Greeting } from "../components/Greeting";
+import { UserSidebar } from "../components/UserSidebar";
 
 export function Classes() {
   const { profile } = useSession();
-  const navigate = useNavigate();
 
   return (
-    <Stack direction="column" alignItems="center" flex="1" spacing={3} height="100%" py={6}>
-      <Stack width="100%" direction="row" alignItems="center" justifyContent="space-between">
-        <Greeting email={profile?.email} />
+    <>
+      <UserSidebar />
+      <Stack direction="column" flex="1" spacing={3} height="100%" py={6}>
+        <Typography variant="h3">Disciplinas</Typography>
 
-        <Button variant="text" size="small" onClick={() => navigate("/")}>
-          Voltar
-        </Button>
+        <ClassesTable classes={profile?.classes ?? []} />
       </Stack>
-      <Typography variant="h2">Notas e Faltas</Typography>
-
-      <ClassesTable classes={profile?.classes ?? []} />
-    </Stack>
+    </>
   );
 }

@@ -1,10 +1,10 @@
-import { Container } from "@mui/material";
 import { AppRouter } from "./Router";
+import { Layout } from "./components/Layout";
 
 export default function App() {
   return (
-    <Container maxWidth="md" sx={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <Layout>
       <AppRouter />
-    </Container>
+    </Layout>
   );
 }

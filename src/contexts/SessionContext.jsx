@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { getUser } from "../data";
 
 const SessionContext = createContext();
@@ -9,15 +9,17 @@ export function SessionProvider({ children }) {
 
   const isLoggedIn = !!userId;
 
-  useEffect(() => {
-    if (userId) {
-      getUser(userId).then(setProfile);
-    } else {
-      setProfile(null);
-    }
-  }, [userId]);
+  const connect = async (userId) => {
+    const user = await getUser(userId);
+    setUserId(userId);
+    setProfile(user);
+  };
 
-  return <SessionContext.Provider value={{ userId, setUserId, profile, isLoggedIn }}>{children}</SessionContext.Provider>;
+  const disconnect = () => {
+    setProfile(null);
+  };
+
+  return <SessionContext.Provider value={{ userId, connect, disconnect, profile, isLoggedIn }}>{children}</SessionContext.Provider>;
 }
 
 export function useSession() {

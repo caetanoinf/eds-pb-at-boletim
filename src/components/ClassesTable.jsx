@@ -10,9 +10,9 @@ export function ClassesTable({ classes }) {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Disciplina</TableCell>
-            <TableCell sx={{ textAlign: "right" }}>Média</TableCell>
-            <TableCell sx={{ textAlign: "right" }}>Faltas</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Disciplina</TableCell>
+            <TableCell sx={{ fontWeight: "bold", textAlign: "right" }}>Média</TableCell>
+            <TableCell sx={{ fontWeight: "bold", textAlign: "right" }}>Faltas</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

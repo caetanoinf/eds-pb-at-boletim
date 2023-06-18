@@ -51,6 +51,28 @@
             }
           ],
           "missedClasses": 10
+        },
+        {
+          "id": 3,
+          "name": "Desenvolvimento Web com React",
+          "grades": [
+            {
+              "id": 1,
+              "name": "TP1",
+              "grade": 9.1
+            },
+            {
+              "id": 2,
+              "name": "TP2",
+              "grade": 10.0
+            },
+            {
+              "id": 3,
+              "name": "TP3",
+              "grade": 9.8
+            }
+          ],
+          "missedClasses": 0
         }
       ]
     }
