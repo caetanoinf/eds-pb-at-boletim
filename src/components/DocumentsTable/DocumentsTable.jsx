@@ -22,7 +22,7 @@ function formatTimestamp(timestamp) {
 const formatDocumentType = (document) => {
   const documentTypes = {
     historico: "Histórico Escolar",
-    declaracao: "Histórico Escolar",
+    declaracao: "Declaração de Matrícula",
     certificate: "Certificado/Diploma",
     boletim: "Boletim de Notas",
   };
