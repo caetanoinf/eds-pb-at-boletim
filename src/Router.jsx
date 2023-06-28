@@ -1,20 +1,38 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { useSession } from "./contexts";
 
-import { SignIn } from "./pages/SignIn";
-import { Home } from "./pages/Home";
-import { Classes } from "./pages/Classes";
-import { Documents } from "./pages/Documents";
+import { useAuth } from "./hooks";
+import { CircularProgress, Stack } from "@mui/material";
+import { Classes, Documents, Home, SignIn } from "./pages";
+
+const privateRoutes = (
+  <>
+    <Route path="/" element={<Home />} />
+    <Route path="/classes" element={<Classes />} />
+    <Route path="/documents" element={<Documents />} />
+  </>
+);
+
+const publicRoutes = (
+  <>
+    <Route path="/" element={<SignIn />} />
+  </>
+);
 
 export function AppRouter() {
-  const { isLoggedIn } = useSession();
+  const { isLoggedIn, authenticating } = useAuth();
+
+  if (authenticating) {
+    return (
+      <Stack direction="column" alignItems="center" justifyContent="center" sx={{ height: "100vh" }}>
+        <CircularProgress size={60} />
+      </Stack>
+    );
+  }
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={isLoggedIn ? <Home /> : <SignIn />} />
-        <Route path="/classes" element={<Classes />} />
-        <Route path="/documents" element={<Documents />} />
+        {isLoggedIn ? privateRoutes : publicRoutes}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -4,7 +4,8 @@ import { useSession } from "../contexts";
 import { UserSidebar } from "../components/UserSidebar";
 
 export function Home() {
-  const { profile } = useSession();
+  const { authenticatedUser } = useSession();
+  const profile = authenticatedUser?.profile;
 
   return (
     <>

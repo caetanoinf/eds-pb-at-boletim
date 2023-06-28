@@ -1,12 +1,13 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, where } from "firebase/firestore";
 import { db } from "../data";
 import { useCallback } from "react";
-import { useSession } from "../contexts";
+import { useAuth } from "./use-auth";
 
 const documentsCollection = collection(db, "document_requests");
 
 export function useDocuments() {
-  const { userId } = useSession();
+  const { authenticatedUser } = useAuth();
+  const userId = authenticatedUser?.uid;
 
   const getDocumentRequests = useCallback(async () => {
     const q = query(documentsCollection, where("userId", "==", userId));

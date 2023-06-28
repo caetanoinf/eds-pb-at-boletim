@@ -1,14 +1,18 @@
 import { Container, Stack, Typography } from "@mui/material";
 import { LoginForm } from "../components";
-import { useSession } from "../contexts";
-
-const USER_ID = "123456789";
+import { useAuth } from "../hooks";
+import { useMutation } from "react-query";
 
 export function SignIn() {
-  const { connect } = useSession();
+  const auth = useAuth();
+
+  const signInMutation = useMutation({
+    mutationKey: "signIn",
+    mutationFn: auth.signIn,
+  });
 
   const handleSubmit = ({ email, password }) => {
-    connect(USER_ID);
+    signInMutation.mutate({ email, password });
   };
 
   return (
@@ -20,7 +24,7 @@ export function SignIn() {
 
         <Typography variant="subtitle1">Informe suas credenciais para continuar</Typography>
 
-        <LoginForm onSubmit={handleSubmit} />
+        <LoginForm onSubmit={handleSubmit} isLoading={signInMutation.isLoading} />
       </Stack>
     </Container>
   );

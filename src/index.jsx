@@ -7,6 +7,7 @@ import { SessionProvider } from "./contexts";
 
 import "@fontsource/roboto";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { SnackbarProvider } from "notistack";
 
 const queryClient = new QueryClient();
 
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <CssBaseline />
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
-        <App />
+        <SnackbarProvider>
+          <App />
+        </SnackbarProvider>
       </SessionProvider>
     </QueryClientProvider>
   </React.StrictMode>

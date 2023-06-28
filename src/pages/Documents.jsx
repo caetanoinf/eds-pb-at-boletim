@@ -4,17 +4,23 @@ import { RequestDocumentForm } from "../components/RequestDocumentForm";
 import { DocumentsTable } from "../components/DocumentsTable";
 import { useDocuments } from "../hooks";
 import { useMutation, useQuery } from "react-query";
+import { useSnackbar } from "notistack";
 
 export function Documents() {
   const { createDocumentRequest, getDocumentRequests, deleteDocumentRequest } = useDocuments();
 
   const documents = useQuery("GET_DOCUMENT_REQUESTS", getDocumentRequests);
+  const { enqueueSnackbar } = useSnackbar();
 
   const createDocumentMutation = useMutation({
     mutationKey: "createDocumentRequest",
     mutationFn: createDocumentRequest,
     onSuccess: () => {
       documents.refetch();
+      enqueueSnackbar("Documento solicitado com sucesso", { variant: "success" });
+    },
+    onError: () => {
+      enqueueSnackbar("Erro ao solicitar documento", { variant: "error" });
     },
   });
 
@@ -23,6 +29,10 @@ export function Documents() {
     mutationFn: deleteDocumentRequest,
     onSuccess: () => {
       documents.refetch();
+      enqueueSnackbar("Documento excluído com sucesso", { variant: "success" });
+    },
+    onError: () => {
+      enqueueSnackbar("Erro ao excluir documento", { variant: "error" });
     },
   });
 

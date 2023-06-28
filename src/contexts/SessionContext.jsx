@@ -1,25 +1,32 @@
-import { createContext, useContext, useState } from "react";
-import { getUser } from "../data";
+import { createContext, useContext, useEffect, useState } from "react";
+import { auth } from "../data/firebase";
+import { useProfile } from "../hooks/use-profile";
 
-const SessionContext = createContext();
+const SessionContext = createContext({ authenticatedUser: null, authenticating: true });
 
 export function SessionProvider({ children }) {
-  const [userId, setUserId] = useState(null);
-  const [profile, setProfile] = useState(null);
+  const [authenticatedUser, setAuthenticatedUser] = useState(null);
+  const [authenticating, setAuthenticating] = useState(true);
+  const { getProfile } = useProfile();
 
-  const isLoggedIn = !!userId;
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const profile = await getProfile(user.uid);
+        setAuthenticatedUser({ ...user, profile });
+      } else {
+        setAuthenticatedUser(user);
+      }
 
-  const connect = async (userId) => {
-    const user = await getUser(userId);
-    setUserId(userId);
-    setProfile(user);
-  };
+      setAuthenticating(false);
+    });
 
-  const disconnect = () => {
-    setProfile(null);
-  };
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-  return <SessionContext.Provider value={{ userId, connect, disconnect, profile, isLoggedIn }}>{children}</SessionContext.Provider>;
+  return <SessionContext.Provider value={{ authenticatedUser, authenticating }}>{children}</SessionContext.Provider>;
 }
 
 export function useSession() {

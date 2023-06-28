@@ -6,16 +6,17 @@ import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSession } from "../contexts";
+import { useAuth } from "../hooks";
 
 const drawerWidth = 280;
 
 export function UserSidebar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { disconnect } = useSession();
+  const { signOut } = useAuth();
 
   const handleLogout = () => {
-    disconnect();
+    signOut();
     navigate("/");
   };
 
